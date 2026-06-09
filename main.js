@@ -1,3 +1,4 @@
+const { animate } = anime;
 const to_dos = [];
 let draggedindex = null;
 const doingColumn = document.querySelector(".doing");
@@ -10,6 +11,14 @@ doingColumn.addEventListener("dragover", (e) => {
 doingColumn.addEventListener("drop", () => {
   to_dos[draggedindex].status = "doing";
   reRender();
+  const last = doingContainer.lastElementChild;
+  if (last) {
+    animate(last, {
+      scale: [0.85, 1],
+      duration: 2000,
+      easing: "easeOutElastic(1, .6)",
+    });
+  }
 });
 doneColumn.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -18,6 +27,14 @@ doneColumn.addEventListener("dragover", (e) => {
 doneColumn.addEventListener("drop", () => {
   to_dos[draggedindex].status = "done";
   reRender();
+  const last = doneContainer.lastElementChild;
+  if (last) {
+    animate(last, {
+      scale: [0.85, 1],
+      duration: 400,
+      easing: "easeOutElastic(1, .6)",
+    });
+  }
 });
 todoColumn.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -26,6 +43,15 @@ todoColumn.addEventListener("dragover", (e) => {
 todoColumn.addEventListener("drop", () => {
   to_dos[draggedindex].status = "todo";
   reRender();
+  // Bounce effect on drop
+  const last = todoContainer.lastElementChild;
+  if (last) {
+    animate(last, {
+      scale: [0.85, 1],
+      duration: 400,
+      easing: "easeOutElastic(1, .6)",
+    });
+  }
 });
 
 const todoContainer = document.querySelector(".todo-tasks");
@@ -42,7 +68,6 @@ function Createtask(task, index) {
   const taskdiv = document.createElement("div");
   taskdiv.draggable = true;
   taskdiv.addEventListener("dragstart", () => {
-    console.log("drag started");
     draggedindex = index;
   });
 
@@ -57,7 +82,7 @@ function Createtask(task, index) {
     deletebtn.classList.add("deletebtn");
 
     deletebtn.addEventListener("click", () => {
-      deleteTask(index);
+      deleteTask(index, taskdiv);
     });
 
     taskdiv.appendChild(deletebtn);
@@ -69,12 +94,28 @@ function Createtask(task, index) {
   if (task.status == "done") {
     doneContainer.appendChild(taskdiv);
   }
+
+  // Animate new task appearing
+  animate(taskdiv, {
+    opacity: [0, 1],
+    translateY: [20, 0],
+    duration: 400,
+    easing: "easeOutCubic",
+  });
 }
 
-function deleteTask(index) {
-  console.log(index);
-  to_dos.splice(index, 1);
-  reRender();
+function deleteTask(index, taskdiv) {
+  // Animate task removal then delete
+  animate(taskdiv, {
+    opacity: [1, 0],
+    scale: [1, 0.8],
+    duration: 300,
+    easing: "easeInCubic",
+    onComplete: () => {
+      to_dos.splice(index, 1);
+      reRender();
+    },
+  });
 }
 
 reRender();
