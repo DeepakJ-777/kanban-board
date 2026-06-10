@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="main_container">
+            <div class="container">
+                <h1>KANBAN BOARD</h1>
+                <div>
+                    <input
+                        id="task_input"
+                        type="text"
+                        class="task-input"
+                        placeholder="Add a new task..."
+                    />
+
+                    <button id="task_submit" class="input-btn">&plus;</button>
+                </div>
+
+                <div class="board">
+                    <div class="todo">
+                        <h2>TO_DO</h2>
+                        <div class="todo-tasks"></div>
+                    </div>
+                    <div class="doing">
+                        <h2>DOING</h2>
+                        <div class="doing-tasks"></div>
+                    </div>
+                    <div class="done">
+                        <h2>DONE</h2>
+                        <div class="done-tasks"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>

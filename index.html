@@ -1,40 +1,350 @@
 <!doctype html>
-<html>
+<!-- Declares the document type as HTML5 -->
+
+<html lang="en">
+    <!-- Root HTML element; lang="en" tells browsers/screen readers the language is English -->
+
     <head>
-        <link rel="stylesheet" href="style.css" />
+        <!-- The <head> contains metadata and linked resources (not visible on the page) -->
+
+        <meta charset="UTF-8" />
+        <!-- Sets character encoding to UTF-8, supporting all Unicode characters (emojis, symbols, etc.) -->
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Makes the page responsive: width matches the device, initial zoom is 1:1 (no scaling) -->
+
+        <title>Kanban — Organize Your Work</title>
+        <!-- The text shown in the browser tab title bar -->
+
+        <!-- Loads the "Inter" font from Google Fonts in weights 200–900.
+             display=swap means the page uses a fallback font until Inter loads,
+             then swaps it in (avoids invisible text while loading) -->
+
+        <link rel="stylesheet" href="landing.css" />
+        <!-- Links this HTML file to the external CSS stylesheet "landing.css"
+             which contains all the visual styling for this landing page -->
     </head>
+
     <body>
-        <div class="main_container">
-            <div class="container">
-                <h1>KANBAN BOARD</h1>
-                <div>
-                    <input
-                        id="task_input"
-                        type="text"
-                        class="task-input"
-                        placeholder="Add a new task..."
-                    />
+        <!-- The <body> contains all visible page content -->
 
-                    <button id="task_submit" class="input-btn">&plus;</button>
-                </div>
+        <!-- ═══════════════════════════════════════════════
+             FLOATING BACKGROUND GRAPHICS
+             Decorative shapes (circles, lines, dots, a ring, a cross)
+             that float behind all content. They are animated by JS.
+             aria-hidden="true" hides them from screen readers since
+             they are purely decorative.
+             ═══════════════════════════════════════════════ -->
+        <div class="bg-graphics" aria-hidden="true">
+            <!-- Container for all background shapes; positioned fixed via CSS to cover the viewport -->
+            <div class="bg-shape bg-circle-1"></div>
+            <!-- A large circle outline in the upper-right area -->
+            <div class="bg-shape bg-circle-2"></div>
+            <!-- A medium circle outline in the mid-left area -->
+            <div class="bg-shape bg-line-1"></div>
+            <!-- A vertical fading line in the upper-left area -->
+            <div class="bg-shape bg-line-2"></div>
+            <!-- A horizontal fading line in the lower-right area -->
+            <div class="bg-shape bg-dot-grid"></div>
+            <!-- A small grid of dots near the center-top area -->
+            <div class="bg-shape bg-ring-1"></div>
+            <!-- A small circle outline near the lower-left area -->
+            <div class="bg-shape bg-cross-1"></div>
+            <!-- A small "+" cross shape in the lower-right area -->
+            <div class="bg-shape bg-circle-3"></div>
+            <!-- A small filled circle in the lower-right area -->
+        </div>
 
-                <div class="board">
-                    <div class="todo">
-                        <h2>TO_DO</h2>
-                        <div class="todo-tasks"></div>
-                    </div>
-                    <div class="doing">
-                        <h2>DOING</h2>
-                        <div class="doing-tasks"></div>
-                    </div>
-                    <div class="done">
-                        <h2>DONE</h2>
-                        <div class="done-tasks"></div>
-                    </div>
+        <!-- ═══════════════════════════════════════════════
+             NAVIGATION BAR
+             Fixed at the top of the viewport with a frosted-glass
+             backdrop blur effect. Contains the logo and page links.
+             ═══════════════════════════════════════════════ -->
+        <nav class="nav">
+            <div class="nav-inner">
+                <!-- Inner wrapper that constrains content to max-width: 1400px and centers it -->
+
+                <a href="index.html" class="nav-logo">Kanban</a>
+                <!-- The logo text; clicking it reloads the landing page.
+                     Styled with heavy weight, uppercase, and letter-spacing -->
+
+                <div class="nav-links">
+                    <!-- Container for navigation links, displayed in a flex row -->
+
+                    <a href="#features">Features</a>
+                    <!-- Smooth-scrolls to the Features section (enabled by CSS scroll-behavior: smooth) -->
+
+                    <a href="#how">Process</a>
+                    <!-- Smooth-scrolls to the How It Works / Process section -->
+
+                    <a href="#about">About</a>
+                    <!-- Smooth-scrolls to the About / Quote section -->
+
+                    <a href="kanban.html" class="nav-cta">Open Board</a>
+                    <!-- Styled as a black button (nav-cta = call-to-action).
+                     Navigates to the actual Kanban board page -->
                 </div>
             </div>
+        </nav>
+
+        <!-- ═══════════════════════════════════════════════
+             HERO SECTION
+             Full-viewport-height intro section. Centered text
+             with a label, large heading, subtitle, and CTA button.
+             All elements animate in on page load via JS.
+             ═══════════════════════════════════════════════ -->
+        <section class="hero">
+            <div class="hero-inner">
+                <!-- Centers content and limits max-width to 900px -->
+
+                <p class="hero-label">Task Management, Refined</p>
+                <!-- Small uppercase label above the title; acts as a "kicker" line -->
+
+                <h1 class="hero-title">
+                    Versatile workflow<br />for every project
+                </h1>
+                <!-- The main headline. Uses clamp() in CSS for responsive font sizing.
+                     <br /> forces a line break for visual balance -->
+
+                <p class="hero-sub">
+                    A minimal visual board to move tasks from
+                    <em>To-Do</em> to <em>Done</em>.<br />
+                    Drag. Drop. Done. No sign-up required.
+                </p>
+                <!-- Descriptive subtitle. <em> tags are styled as normal weight + black color
+                     (not italic) to highlight key words "To-Do" and "Done" -->
+
+                <a href="kanban.html" class="btn-primary">
+                    Launch Board
+                    <span class="btn-arrow">→</span>
+                </a>
+                <!-- Primary CTA button: black background, white text, uppercase.
+                     The arrow span animates right on hover via CSS.
+                     Links to the Kanban board page -->
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION DIVIDER
+             A horizontal rule with a centered label ("Features").
+             Three <span> elements: left line, label text, right line.
+             ═══════════════════════════════════════════════ -->
+        <div class="section-divider">
+            <span></span>
+            <!-- Left horizontal line (flex: 1, so it stretches to fill space) -->
+            <span class="divider-label">Features</span>
+            <!-- The centered label text in small uppercase -->
+            <span></span>
+            <!-- Right horizontal line (flex: 1) -->
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
-        <script src="main.js"></script>
+
+        <!-- ═══════════════════════════════════════════════
+             FEATURES SECTION
+             An asymmetric CSS Grid of cards highlighting product
+             features. Cards vary in size (large, tall, wide) to
+             create visual interest.
+             ═══════════════════════════════════════════════ -->
+        <section id="features" class="features">
+            <!-- id="features" is the anchor target for the nav link -->
+
+            <div class="features-grid">
+                <!-- CSS Grid: 3 columns, 2 rows, with cards spanning different amounts -->
+
+                <div class="feature-card feature-card--large">
+                    <!-- Spans 2 columns (grid-column: span 2) — takes up the top-left area -->
+                    <div class="feature-number">01</div>
+                    <!-- Small dim number label for editorial style -->
+                    <h3>Drag & Drop</h3>
+                    <p>
+                        Move tasks between columns instantly. Grab a card, drop
+                        it where it belongs — fluid, tactile, and satisfying.
+                    </p>
+                    <div class="feature-tag">Core</div>
+                    <!-- Small bordered tag pill at the bottom of the card -->
+                </div>
+
+                <div class="feature-card feature-card--tall">
+                    <!-- Spans 2 rows (grid-row: span 2) — takes up the right column, full height -->
+                    <div class="feature-number">02</div>
+                    <h3>Instant Input</h3>
+                    <p>
+                        Type a task, hit +, and it appears. Remove it just as
+                        fast. Zero friction between thought and action.
+                    </p>
+                    <div class="feature-tag">Speed</div>
+                </div>
+
+                <div class="feature-card">
+                    <!-- Normal size: occupies 1 column, 1 row (bottom-left area) -->
+                    <div class="feature-number">03</div>
+                    <h3>Animated Transitions</h3>
+                    <p>
+                        Every card bounce, slide, and fade is powered by
+                        Anime.js. Because managing tasks should feel effortless.
+                    </p>
+                    <div class="feature-tag">Motion</div>
+                </div>
+
+                <div class="feature-card feature-card--wide">
+                    <!-- Spans 2 columns (grid-column: span 2) — fills the bottom row
+                         alongside the tall card that continues from above -->
+                    <div class="feature-number">04</div>
+                    <h3>Three-Column Clarity</h3>
+                    <p>
+                        To-Do. Doing. Done. A time-tested workflow that gives
+                        you an instant snapshot of where everything stands. No
+                        clutter, no noise — just visual clarity.
+                    </p>
+                    <div class="feature-tag">Design</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Second section divider — same structure but with "Process" label -->
+        <div class="section-divider section-divider--alt">
+            <!-- section-divider--alt adds slight spacing adjustment -->
+            <span></span>
+            <span class="divider-label">Process</span>
+            <span></span>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             HOW IT WORKS — STEPS SECTION
+             Four numbered steps in a horizontal row, separated
+             by vertical borders. Each step has a short accent line,
+             a number, heading, and description.
+             ═══════════════════════════════════════════════ -->
+        <section id="how" class="steps">
+            <!-- id="how" is the anchor target for the nav "Process" link -->
+
+            <div class="steps-container">
+                <!-- CSS Grid: 4 equal columns, no gap (borders act as dividers) -->
+
+                <div class="step">
+                    <div class="step-line"></div>
+                    <!-- A short horizontal accent bar; grows wider on hover via CSS/JS -->
+                    <span class="step-num">01</span>
+                    <!-- Step number in dim text -->
+                    <h3>Add a task</h3>
+                    <p>
+                        Type in the input bar and press + to create a card in
+                        the To-Do column.
+                    </p>
+                </div>
+
+                <div class="step">
+                    <div class="step-line"></div>
+                    <span class="step-num">02</span>
+                    <h3>Start working</h3>
+                    <p>Drag the card to Doing when you're actively on it.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-line"></div>
+                    <span class="step-num">03</span>
+                    <h3>Mark complete</h3>
+                    <p>Drop it in Done when you've finished the task.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-line"></div>
+                    <span class="step-num">04</span>
+                    <h3>Clean up</h3>
+                    <p>
+                        Remove unwanted tasks with the × button. Keep your board
+                        pristine.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════
+             QUOTE / ABOUT SECTION
+             A centered blockquote flanked by two short
+             horizontal lines. Acts as a philosophical statement
+             about the product's design philosophy.
+             ═══════════════════════════════════════════════ -->
+        <section id="about" class="quote-section">
+            <!-- id="about" is the anchor target for the nav "About" link -->
+
+            <div class="quote-inner">
+                <!-- Centers content, limits max-width to 800px -->
+
+                <div class="quote-line"></div>
+                <!-- Top decorative horizontal line (48px wide, centered) -->
+
+                <blockquote class="quote">
+                    A task manager that doesn't make<br />
+                    you manage the manager.
+                </blockquote>
+                <!-- The quote text — large, light-weight, with a line break for balance -->
+
+                <div class="quote-line"></div>
+                <!-- Bottom decorative horizontal line -->
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════
+             CTA (CALL TO ACTION) SECTION
+             Dark background section with inverted colors.
+             A final push to get the user to launch the board.
+             ═══════════════════════════════════════════════ -->
+        <section class="cta">
+            <div class="cta-inner">
+                <!-- Centers content, limits max-width to 600px -->
+
+                <h2>Ready to get<br />things done?</h2>
+                <!-- Large bold heading on a black background -->
+
+                <a href="kanban.html" class="btn-primary">
+                    Launch Board
+                    <span class="btn-arrow">→</span>
+                </a>
+                <!-- Same button style as the hero, but CSS inverts it:
+                     white background, black text (overridden in .cta .btn-primary) -->
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════
+             FOOTER
+             Simple footer with logo/tagline on the left and
+             navigation links on the right.
+             ═══════════════════════════════════════════════ -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <!-- Flex container: space-between to push left/right apart -->
+
+                <div class="footer-left">
+                    <span class="footer-logo">Kanban</span>
+                    <!-- Brand name in bold uppercase -->
+                    <span class="footer-tagline"
+                        >Built with HTML · CSS · JS · Anime.js</span
+                    >
+                    <!-- Tech stack credit in light gray text -->
+                </div>
+
+                <div class="footer-right">
+                    <a href="kanban.html">Board</a>
+                    <!-- Links to the Kanban board page -->
+                    <a href="#features">Features</a>
+                    <!-- Smooth-scrolls back up to Features -->
+                    <a href="#how">Process</a>
+                    <!-- Smooth-scrolls back up to Process -->
+                </div>
+            </div>
+        </footer>
+
+        <!-- ═══════════════════════════════════════════════
+             SCRIPTS
+             Loaded at the end of <body> so the DOM is fully
+             parsed before JS runs.
+             ═══════════════════════════════════════════════ -->
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+        <!-- Loads Anime.js v3.2.2 (animation library) from a CDN.
+             This provides the `anime()` function and `anime.timeline()` used in landing.js -->
+
+        <script src="landing.js"></script>
+        <!-- Loads the custom JS file that handles all scroll-based
+             and load-based animations for this landing page -->
     </body>
 </html>

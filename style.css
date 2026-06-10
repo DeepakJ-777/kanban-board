@@ -183,6 +183,7 @@ body {
     align-items: center;
     gap: 12px;
     cursor: grab;
+    position: relative;
     transition:
         transform 0.18s,
         box-shadow 0.18s,
@@ -226,6 +227,82 @@ body {
 .deletebtn:hover {
     color: #ef4444;
     background: rgba(239, 68, 68, 0.12);
+}
+
+/* ── More Button ── */
+.task-more-btn {
+    background: var(--surface-light);
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    line-height: 1;
+    margin-left: auto;
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+
+.task-more-btn:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ── Status Dropdown ── */
+.task-more-button {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+    z-index: 100;
+    min-width: 160px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.task-status-item {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.task-status-item:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+.task-status-item.current {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ── Mobile: vertical board ── */
+@media (max-width: 768px) {
+    .board {
+        grid-template-columns: 1fr !important;
+    }
+
+    .todo,
+    .doing,
+    .done {
+        min-height: 180px;
+    }
+
+    .task {
+        position: relative;
+        cursor: default;
+    }
 }
 
 /* ── Empty State ── */

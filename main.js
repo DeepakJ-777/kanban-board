@@ -64,6 +64,35 @@ function reRender() {
   to_dos.forEach(Createtask);
 }
 
+function showstatus(task, index, taskdiv) {
+  const statusList = document.createElement("div");
+  statusList.classList.add("task-more-button");
+
+  const statuses = [
+    { key: "todo", label: "TO DO" },
+    { key: "doing", label: "DOING" },
+    { key: "done", label: "DONE" },
+  ];
+
+  statuses.forEach(({ key, label }) => {
+    const item = document.createElement("div");
+    item.classList.add("task-status-item");
+    item.textContent =
+      task.status === key ? label + " (current)" : "Move to " + label;
+    if (task.status === key) {
+      item.classList.add("current");
+    }
+    item.addEventListener("click", () => {
+      to_dos[index].status = key;
+      statusList.remove();
+      reRender();
+    });
+    statusList.appendChild(item);
+  });
+
+  taskdiv.appendChild(statusList);
+}
+
 function Createtask(task, index) {
   const taskdiv = document.createElement("div");
   taskdiv.draggable = true;
@@ -76,6 +105,7 @@ function Createtask(task, index) {
   taskspan.textContent = task.name;
 
   taskdiv.appendChild(taskspan);
+
   if (task.status == "todo") {
     const deletebtn = document.createElement("button");
     deletebtn.innerHTML = "&times;";
@@ -84,8 +114,29 @@ function Createtask(task, index) {
     deletebtn.addEventListener("click", () => {
       deleteTask(index, taskdiv);
     });
-
     taskdiv.appendChild(deletebtn);
+  }
+
+  // More button on every task
+  const morebtn = document.createElement("button");
+  morebtn.innerHTML = "&#8942;";
+  morebtn.classList.add("task-more-btn");
+  morebtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const statuslist = taskdiv.querySelector(".task-more-button");
+    if (!statuslist) {
+      // Close any other open menus first
+      document
+        .querySelectorAll(".task-more-button")
+        .forEach((el) => el.remove());
+      showstatus(task, index, taskdiv);
+    } else {
+      statuslist.remove();
+    }
+  });
+  taskdiv.appendChild(morebtn);
+
+  if (task.status == "todo") {
     todoContainer.appendChild(taskdiv);
   }
   if (task.status == "doing") {
@@ -117,6 +168,11 @@ function deleteTask(index, taskdiv) {
     },
   });
 }
+
+// Close dropdown when clicking outside
+document.addEventListener("click", () => {
+  document.querySelectorAll(".task-more-button").forEach((el) => el.remove());
+});
 
 reRender();
 const task_input = document.querySelector("#task_input");
