@@ -1,5 +1,6 @@
 const { animate } = anime;
-const to_dos = [];
+const STORAGE_KEY = "kanban_tasks";
+const to_dos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let draggedindex = null;
 const doingColumn = document.querySelector(".doing");
 const doneColumn = document.querySelector(".done");
@@ -57,11 +58,16 @@ todoColumn.addEventListener("drop", () => {
 const todoContainer = document.querySelector(".todo-tasks");
 const doingContainer = document.querySelector(".doing-tasks");
 const doneContainer = document.querySelector(".done-tasks");
+function saveTasks() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(to_dos));
+}
+
 function reRender() {
   todoContainer.innerHTML = "";
   doingContainer.innerHTML = "";
   doneContainer.innerHTML = "";
   to_dos.forEach(Createtask);
+  saveTasks();
 }
 
 function showstatus(task, index, taskdiv) {
