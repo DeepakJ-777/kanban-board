@@ -1,10 +1,16 @@
-const { animate } = anime;
+// ══════════════════════════════════════════════════════
+//  MAIN.JS — Kanban Board Logic
+//  Uses Anime.js v3.2.2 (loaded via CDN in kanban.html).
+//  In v3: anime({...}) creates a single animation.
+// ══════════════════════════════════════════════════════
+
 const STORAGE_KEY = "kanban_tasks";
 const to_dos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let draggedindex = null;
 const doingColumn = document.querySelector(".doing");
 const doneColumn = document.querySelector(".done");
 const todoColumn = document.querySelector(".todo");
+
 doingColumn.addEventListener("dragover", (e) => {
   e.preventDefault();
 });
@@ -14,13 +20,15 @@ doingColumn.addEventListener("drop", () => {
   reRender();
   const last = doingContainer.lastElementChild;
   if (last) {
-    animate(last, {
+    anime({
+      targets: last,
       scale: [0.85, 1],
-      duration: 2000,
+      duration: 400,
       easing: "easeOutElastic(1, .6)",
     });
   }
 });
+
 doneColumn.addEventListener("dragover", (e) => {
   e.preventDefault();
 });
@@ -30,13 +38,15 @@ doneColumn.addEventListener("drop", () => {
   reRender();
   const last = doneContainer.lastElementChild;
   if (last) {
-    animate(last, {
+    anime({
+      targets: last,
       scale: [0.85, 1],
       duration: 400,
       easing: "easeOutElastic(1, .6)",
     });
   }
 });
+
 todoColumn.addEventListener("dragover", (e) => {
   e.preventDefault();
 });
@@ -44,10 +54,10 @@ todoColumn.addEventListener("dragover", (e) => {
 todoColumn.addEventListener("drop", () => {
   to_dos[draggedindex].status = "todo";
   reRender();
-  // Bounce effect on drop
   const last = todoContainer.lastElementChild;
   if (last) {
-    animate(last, {
+    anime({
+      targets: last,
       scale: [0.85, 1],
       duration: 400,
       easing: "easeOutElastic(1, .6)",
@@ -58,6 +68,7 @@ todoColumn.addEventListener("drop", () => {
 const todoContainer = document.querySelector(".todo-tasks");
 const doingContainer = document.querySelector(".doing-tasks");
 const doneContainer = document.querySelector(".done-tasks");
+
 function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(to_dos));
 }
@@ -75,7 +86,7 @@ function showstatus(task, index, taskdiv) {
   statusList.classList.add("task-more-button");
 
   const statuses = [
-    { key: "todo", label: "TO DO" },
+    { key: "todo", label: "TO-DO" },
     { key: "doing", label: "DOING" },
     { key: "done", label: "DONE" },
   ];
@@ -123,23 +134,27 @@ function Createtask(task, index) {
     taskdiv.appendChild(deletebtn);
   }
 
-  // More button on every task
   const morebtn = document.createElement("button");
-  morebtn.innerHTML = "&#8942;";
+  morebtn.innerHTML = task.status;
   morebtn.classList.add("task-more-btn");
   morebtn.addEventListener("click", (e) => {
     e.stopPropagation();
     const statuslist = taskdiv.querySelector(".task-more-button");
     if (!statuslist) {
-      // Close any other open menus first
+      document
+        .querySelectorAll(".task-more-button")
+        .forEach((el) => el.parentElement.style.removeProperty("z-index"));
       document
         .querySelectorAll(".task-more-button")
         .forEach((el) => el.remove());
+      taskdiv.style.zIndex = "50";
       showstatus(task, index, taskdiv);
     } else {
       statuslist.remove();
+      taskdiv.style.removeProperty("z-index");
     }
   });
+
   taskdiv.appendChild(morebtn);
 
   if (task.status == "todo") {
@@ -152,8 +167,8 @@ function Createtask(task, index) {
     doneContainer.appendChild(taskdiv);
   }
 
-  // Animate new task appearing
-  animate(taskdiv, {
+  anime({
+    targets: taskdiv,
     opacity: [0, 1],
     translateY: [20, 0],
     duration: 400,
@@ -162,22 +177,24 @@ function Createtask(task, index) {
 }
 
 function deleteTask(index, taskdiv) {
-  // Animate task removal then delete
-  animate(taskdiv, {
+  anime({
+    targets: taskdiv,
     opacity: [1, 0],
     scale: [1, 0.8],
     duration: 300,
     easing: "easeInCubic",
-    onComplete: () => {
+    complete: () => {
       to_dos.splice(index, 1);
       reRender();
     },
   });
 }
 
-// Close dropdown when clicking outside
 document.addEventListener("click", () => {
-  document.querySelectorAll(".task-more-button").forEach((el) => el.remove());
+  document.querySelectorAll(".task-more-button").forEach((el) => {
+    el.parentElement.style.removeProperty("z-index");
+    el.remove();
+  });
 });
 
 reRender();

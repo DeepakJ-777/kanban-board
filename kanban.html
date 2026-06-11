@@ -1,26 +1,38 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kanban — Board</title>
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
+        <nav class="nav">
+            <div class="nav-inner">
+                <a href="index.html" class="nav-logo">Kanban</a>
+                <div class="nav-links">
+                    <a href="index.html">Landing</a>
+                    <a href="kanban.html" class="nav-cta">Board</a>
+                </div>
+            </div>
+        </nav>
+
         <div class="main_container">
             <div class="container">
                 <h1>KANBAN BOARD</h1>
-                <div>
+                <div class="input-bar">
                     <input
                         id="task_input"
                         type="text"
                         class="task-input"
                         placeholder="Add a new task..."
                     />
-
                     <button id="task_submit" class="input-btn">&plus;</button>
                 </div>
 
                 <div class="board">
                     <div class="todo">
-                        <h2>TO_DO</h2>
+                        <h2>TO-DO</h2>
                         <div class="todo-tasks"></div>
                     </div>
                     <div class="doing">
@@ -34,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
         <script src="main.js"></script>
     </body>
 </html>
